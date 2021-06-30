@@ -1,0 +1,301 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+
+    <style>
+      html {
+        height: 100px;
+      }
+      body {
+        padding: 0;
+        margin: 0;
+        font-size: 16px;
+      }
+      .ani7_panel {
+        display: grid;
+        width: 500px;
+        grid-template-areas:
+          "ani7_title ani7_title"
+          "ani7_desc ani7_desc"
+          "ani7_url ani7_url"
+          "ani7_buttons ani7_buttons"
+          "ani7_footer ani7_footer";
+        grid-template-columns: 1fr minmax(10px, min-content);
+        /* font-size: 18px; */
+        /* border-radius: 10px; */
+        /* background-color: #bbe4e4; */
+        row-gap: 1px;
+        padding: 5px;
+      }
+      .ani7_title {
+        grid-area: ani7_title;
+        /* background-color: silver; */
+        font-size: 1.3em;
+        text-align: center;
+        border-radius: 10px 10px 0 0;
+      }
+      .ani7_url {
+        display: flex;
+        grid-area: ani7_url;
+        /* background-color: rgb(251 251 251); rgb(170 245 147); */
+        justify-content: center;
+        word-break: break-all;
+        border-radius: 15px;
+        padding: 10px;
+        background-color: lavender;
+        margin-top: 8px;
+      }
+      .ani7_footer {
+        grid-area: ani7_footer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        /* background-color: silver; */
+        max-height: 300px;
+        overflow: auto;
+      }
+      .ani7_desc {
+        display: flex;
+        grid-area: ani7_desc;
+        /* background-color: silver; */
+        /* text-align: center; */
+        font-size: 0.9em;
+        border-left-color: green;
+        border-left-style: dotted;
+        border-left-width: 5px;
+        padding-left: 10px;
+        margin-left: 10px;
+        margin-right: 10px;
+      }
+      .ani7_desc_color-red {
+        border-left-color: red;
+      }
+      .ani7_buttons {
+        grid-area: ani7_buttons;
+        display: flex;
+        align-items: center;
+        flex-direction: row;
+        justify-content: space-around;
+
+        /* background-color: rgb(18, 172, 95); */
+      }
+
+      /* Checked */
+
+      /* .ani7_buttons input[type="radio"]:checked + label::before {
+        content: "\00a0 \00a0 \00a0";
+        padding-left: 10px;
+        background: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23f0f' d='M6.564.75l-3.59 3.612-1.538-1.55L0 4.26 2.974 7.25 8 2.193z'/%3e%3c/svg%3e")
+          no-repeat;
+      } */
+      /* Hover */
+      /* а дальше кнопки*/
+      .ani7_button {
+        position: relative;
+        display: inline-block;
+        margin-top: 6px;
+        font-size: 1em;
+        color: var(--colorFont);
+        text-decoration: none;
+        text-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
+        padding: 0.5em 0.5em;
+        outline: none;
+        /* border-radius: 3px;
+        background: linear-gradient(rgb(110, 112, 120), rgb(81, 81, 86))
+          rgb(110, 112, 120);
+        box-shadow: 0 1px rgba(255, 255, 255, 0.2) inset,
+          0 3px 5px rgba(0, 1, 6, 0.5), 0 0 1px 1px rgba(0, 1, 6, 0.2);
+        transition: 0.2s ease-in-out; */
+        user-select: none;
+        cursor: pointer;
+      }
+      .ani7_buttonSend {
+        border-color: var(--colorFont);
+        border-style: solid;
+        border-radius: 5px;
+        border-width: 1px;
+      }
+      .ani7_button:active {
+        color: silver;
+      }
+      .ani7_button_block input[type="radio"]:checked + label {
+        top: 1px;
+        /* background: linear-gradient(rgb(76, 77, 82), rgb(56, 57, 62))
+          rgb(76, 77, 82);
+        box-shadow: 0 0 1px rgba(0, 0, 0, 0.5) inset,
+          0 2px 3px rgba(0, 0, 0, 0.5) inset, 0 1px 1px rgba(255, 255, 255, 0.1); */
+        color: var(--colorFont);
+        font-weight: bold;
+      }
+
+      .ani7_button_block {
+        --colorFont: blue;
+        display: flex;
+      }
+      .ani7_button_block-disable {
+        display: none;
+      }
+      .ani7_button_block input[type="radio"] {
+        display: none;
+      }
+      .ani7_button_block input[type="radio"]:checked + label::after {
+        content: " ]"; /*"\00a0*";*/
+        color: var(--colorFont);
+      }
+      .ani7_button_block input[type="radio"]:checked + label::before {
+        content: "[ ";
+        color: var(--colorFont);
+      }
+
+      /*  */
+      .panelFreezeColorRed {
+        background: linear-gradient(180deg, rgb(251 199 210), rgb(251 215 215));
+      }
+      .panelFreezeColorGreen {
+        background: linear-gradient(180deg, rgb(231 255 225), rgb(246 255 243));
+      }
+      #table {
+        table-layout: fixed;
+        width: 100%;
+      }
+      #table td {
+        word-wrap: break-word;
+        white-space: pre-wrap;
+        cursor:pointer;
+        user-select: none;
+      }
+      #table td:hover {
+        background-color: yellow;
+      }
+      #table tr:nth-child(even) { /* xtnyst */
+        background-color: rgb(226, 224, 224);
+      }
+      #table tr:nth-child(odd) { /*не четные*/
+        background-color: rgb(246, 246, 246);
+      }
+      .tooltip {
+    /* position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black; */
+}
+      .tooltip .tooltiptext {
+        visibility: hidden;
+        width: 95%;
+        background-color: rgb(175, 87, 87);
+        color: rgb(248, 246, 246);
+        text-align: center;
+        border-radius: 6px;
+        padding: 5px 0;
+
+        /* Position the tooltip */
+        position: fixed;
+        z-index: 1000;
+        /* bottom: 100%; */
+        left: 10px;
+        top:10px;
+        /* margin-left: -60px; */
+        opacity: 0;
+        transition: opacity 0.5s;
+      }
+      .tooltip:hover .tooltiptext {
+        visibility: visible;
+        opacity: 1;
+      }
+      .ani7_countDiscard{
+        --colorDiscardChecked: green;
+        /* font-weight: bold; */
+      }
+      /* .ani7_countDiscard::before{
+        content: "[ ";
+        color: var(--colorFont);
+      }
+      .ani7_countDiscard::after{
+        content: " ]";
+        color: var(--colorFont);
+      } */
+      .ani7_countDiscardChecked{
+        /* position: relative;
+        display: inline-block; */
+        margin-top: 6px;
+        font-size: 1em;
+        color: var(--colorFont);
+        text-decoration: none;
+        text-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
+        padding: 0.5em 0.5em;
+        outline: none;
+        user-select: none;
+        /* cursor: pointer; */
+      }
+      .ani7_countDiscardChecked input[type="checkbox"]{
+        display: none;
+      }
+      .ani7_countDiscardChecked input[type="checkbox"]:checked + label::after {
+        content: " ]"; /*"\00a0*";*/
+        color: var(--colorDiscardChecked);
+      }
+      .ani7_countDiscardChecked input[type="checkbox"]:checked + label::before {
+        content: "[ ";
+        color: var(--colorDiscardChecked);
+      }
+      .ani7_countDiscardChecked input[type="checkbox"]:checked + label {
+        font-weight: bold;
+        color: var(--colorDiscardChecked);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="not-freeze-tabs" class="ani7_panel panelFreezeColorGreen">
+      <div class="ani7_title">title</div>
+      <div class="ani7_url">22222</div>
+      <div class="ani7_desc">444444444</div>
+      <div class="ani7_buttons">
+        <div class="ani7_countDiscardChecked">
+          <input
+          id="ani7_checked"
+          type="checkbox"
+          name="ani7_checked"
+          value="3"
+        />
+        <label class="ani7_button ani7_countDiscard" for="ani7_checked"
+          >?</label
+        >
+        </div>
+        <div class="ani7_button_block">
+          <input
+            id="ani7_button-1"
+            type="radio"
+            name="ani7_br_radio"
+            value="1"
+          />
+          <label class="ani7_button buttonRadio" for="ani7_button-1"
+            >Host</label
+          >
+          <input
+            id="ani7_button-2"
+            type="radio"
+            name="ani7_br_radio"
+            value="2"
+            checked
+          />
+          <label class="ani7_button buttonRadio" for="ani7_button-2">Url</label>
+          <input
+            id="ani7_button-3"
+            type="radio"
+            name="ani7_br_radio"
+            value="3"
+          />
+          <label class="ani7_button buttonRadio" for="ani7_button-3"
+            >Url + args</label
+          >
+        </div>
+        <div class="ani7_button ani7_buttonSend ani7_buttonMess">
+          Установить
+        </div>
+      </div>
+      <div class="ani7_footer"><table id="table"></table></div>
+    </div>
+    <script src="vue.js"></script>
+    <script src="script.js"></script>
+    <script src="../vendor/localforage.min.js"></script>
+  </body>
+</html>
