@@ -2,12 +2,10 @@
   "manifest_version": 3,
   "name": "__MSG_extName__",
   "description": "__MSG_extDescription__",
-  "version": "2.0.0",
+  "version": "1.0.1",
   "background": {
-    "service_worker": "background.js",
-    "scripting": ["localforage.min.js", "getLanguage.js","popup/vue.global.prod.js"],
-   // no v3 "persistent": false, // не будем использовать chrome.webRequest API
-    "content_security_policy": "script-src 'self' 'unsafe-eval' 'unsafe-inline' 'unsafe-hashes' ; object-src 'self'"
+    "service_worker": "background.js"
+    //"scripting": ["localforage.min.js", "getLanguage.js"]
   },
 
   "action": {
@@ -21,21 +19,15 @@
   },
   "web_accessible_resources": [
     {
-      "resources": ["*.png","popup/vue.global.prod.js","popup/popup.html"],
+      "resources": ["*.png", "popup/popup.html"],
       "matches": ["*://*/*"]
     }
   ],
-  "content_security_policy": {
-    "extension_pages": "script-src 'self'; object-src 'self'",
-    "popup_page": "script-src 'self'; object-src 'self'"
-  },
-  "permissions": ["storage","tabs", "scripting","activeTab"], // "contextMenus", "tabs"
-  //"optional_permissions":  ["http://*/", "https://*/"],
- // "host_permissions": ["http://*/*", "https://*/*"], Сигнальная звездочка не пашет без этого
+
+  "permissions": ["tabs"], // "contextMenus", "tabs"
   "default_locale": "ru",
   "options_ui": {
     "page": "options.html",
-    "open_in_tab": false
+    "open_in_tab": true
   }
-  
 }
