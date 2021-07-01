@@ -1,6 +1,6 @@
-async function checkEvents(id){
+async function checkEvents(id) {
   let tab = await chrome.tabs.get(id);
-  await changeTab(tab)
+  await changeTab(tab);
   await changeIcon(tab.id);
 }
 
@@ -16,7 +16,7 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
 // addedTabId заменяет removedTabId, // onReplaced !? может не быть такого ?
 if (chrome.tabs.onReplaced) {
   chrome.tabs.onReplaced.addListener(async (addedTabId, removedTabId) => {
-    console.log("Когда же это срабатывает ?",addedTabId, removedTabId)
+    console.log("Когда же это срабатывает ?", addedTabId, removedTabId);
     try {
       let tab = await chrome.tabs.get(addedTabId);
       if (tab) {
@@ -36,7 +36,7 @@ chrome.tabs.onActivated.addListener(async (activeInfo) => {
   // не понятно, но не успевает чтото получить tab при переключении вкладок
   // соорудил тут , таймер
   let interv = setInterval(async () => {
-    //  я думаю здесь надо чтото вроде nextTick()
+    //  я здесь надо чтото вроде nextTick()
     let tab;
     try {
       tab = await chrome.tabs.get(id);
@@ -76,12 +76,22 @@ chrome.windows.onCreated.addListener(async (win) => {
   );
   await Promise.all(promises);
 });
-chrome.windows.onFocusChanged.addListener(async (windowId)=>{
-   if(windowId == chrome.windows.WINDOW_ID_NONE){
-     // все окна потеряли фокус . в линукс при переключении окон происходит
-   }else{
-   console.log("Окно фокус id:",windowId)
-   let tab = await getActiveTab();
-   if (tab) await changeIcon(tab.id);
+// изменение фокуса окна
+chrome.windows.onFocusChanged.addListener(async (windowId) => {
+  if (windowId == chrome.windows.WINDOW_ID_NONE) {
+    // все окна потеряли фокус . в линукс при переключении окон происходит
+  } else {
+    try {
+      await new Promise((a) => setTimeout(() => a(), 500));
+      let tab = await getActiveTab();
+      if (tab) await changeIcon(tab.id);
+    } catch (e) {
+      // user may be dragging a tab
+      console.log("error", e);
+    }
   }
-})
+});
+// сервис работник выгрузился
+chrome.runtime.onSuspend.addListener(function () {
+  console.log("Service Worker Unloading.");
+});

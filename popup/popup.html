@@ -57,8 +57,6 @@
       .ani7_desc {
         display: flex;
         grid-area: ani7_desc;
-        /* background-color: silver; */
-        /* text-align: center; */
         font-size: 0.9em;
         border-left-color: green;
         border-left-style: dotted;
@@ -161,23 +159,20 @@
       #table td {
         word-wrap: break-word;
         white-space: pre-wrap;
-        cursor:pointer;
+        cursor: pointer;
         user-select: none;
       }
       #table td:hover {
         background-color: yellow;
       }
-      #table tr:nth-child(even) { /* xtnyst */
+      #table tr:nth-child(even) {
+        /* xtnyst */
         background-color: rgb(226, 224, 224);
       }
-      #table tr:nth-child(odd) { /*не четные*/
+      #table tr:nth-child(odd) {
+        /*не четные*/
         background-color: rgb(246, 246, 246);
       }
-      .tooltip {
-    /* position: relative;
-    display: inline-block;
-    border-bottom: 1px dotted black; */
-}
       .tooltip .tooltiptext {
         visibility: hidden;
         width: 95%;
@@ -192,7 +187,7 @@
         z-index: 1000;
         /* bottom: 100%; */
         left: 10px;
-        top:10px;
+        top: 10px;
         /* margin-left: -60px; */
         opacity: 0;
         transition: opacity 0.5s;
@@ -201,7 +196,7 @@
         visibility: visible;
         opacity: 1;
       }
-      .ani7_countDiscard{
+      .ani7_countDiscard {
         --colorDiscardChecked: green;
         /* font-weight: bold; */
       }
@@ -213,7 +208,7 @@
         content: " ]";
         color: var(--colorFont);
       } */
-      .ani7_countDiscardChecked{
+      .ani7_countDiscardChecked {
         /* position: relative;
         display: inline-block; */
         margin-top: 6px;
@@ -226,7 +221,7 @@
         user-select: none;
         /* cursor: pointer; */
       }
-      .ani7_countDiscardChecked input[type="checkbox"]{
+      .ani7_countDiscardChecked input[type="checkbox"] {
         display: none;
       }
       .ani7_countDiscardChecked input[type="checkbox"]:checked + label::after {
@@ -251,14 +246,14 @@
       <div class="ani7_buttons">
         <div class="ani7_countDiscardChecked">
           <input
-          id="ani7_checked"
-          type="checkbox"
-          name="ani7_checked"
-          value="3"
-        />
-        <label class="ani7_button ani7_countDiscard" for="ani7_checked"
-          >?</label
-        >
+            id="ani7_checked"
+            type="checkbox"
+            name="ani7_checked"
+            value="3"
+          />
+          <label class="ani7_button ani7_countDiscard" for="ani7_checked"
+            >?</label
+          >
         </div>
         <div class="ani7_button_block">
           <input
@@ -294,8 +289,6 @@
       </div>
       <div class="ani7_footer"><table id="table"></table></div>
     </div>
-    <script src="vue.js"></script>
     <script src="script.js"></script>
-    <script src="../vendor/localforage.min.js"></script>
   </body>
 </html>

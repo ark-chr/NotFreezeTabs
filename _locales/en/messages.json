@@ -6,6 +6,6 @@
     "message": "Chrome freezes inactive tabs, this extension allows you to prevent selected tabs from freezing."
   },
   "extTitle": {
-    "message": "Undo Freeze Tabs"
+    "message": "Undo freezing Tabs"
   }
 }

@@ -1,0 +1,13 @@
+{
+  "button": { "no": "Turn on", "yes": "turn off" },
+  "title": {
+    "no": "Auto-freeze off.",
+    "yes": "Auto-freeze on."
+  },
+  "description": {
+    "no": "The tab with the current url will not stop / freeze. Resources will not be released, which can lead to slowdowns or freezes of the computer.",
+    "yes": "Chrome can stop / freeze this tab with the current URL to save resources, the tab will be restored on new access to it."
+  },
+  "infoDb": "Record in the database:",
+  "serviceTab": "Service tab"
+}
