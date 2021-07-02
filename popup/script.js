@@ -1,5 +1,4 @@
 document.body.onload = async function () {
- 
   console.log("Загружен popup.");
   // не понимаю кажется ServiceWorker не успевает просыпаться.
   // эта строка просто так.
@@ -25,7 +24,7 @@ async function start() {
   }
   let buttonSend = document.querySelector(".ani7_buttonSend");
   if (buttonSend) {
-    buttonSend.removeEventListener("click", sendAndClose);
+    //buttonSend.removeEventListener("click", sendAndClose);
     buttonSend.addEventListener("click", sendAndClose);
   }
 }
@@ -37,8 +36,8 @@ async function getCurrent() {
   else return null;
 }
 async function sendAndClose() {
-  console.log("Проверка повтора Button Click");
-  let el = document.querySelector('input[name="ani7_br_radio"]:checked');
+  console.log("test button .");
+  //  let el = document.querySelector('input[name="ani7_br_radio"]:checked');
   //let url = el.getAttribute("data-url");
   let elUrl = document.querySelector(".ani7_url");
   url = elUrl.getAttribute("data-url");
@@ -99,7 +98,7 @@ async function checkRegim() {
 async function getDataString(enabled) {
   let lang = await loadLang();
   if (!lang) return;
-  console.log("lang", lang);
+  //console.log("lang", lang);
   let labels = {};
   labels.title = enabled ? lang.title.yes : lang.title.no;
   labels.desc = enabled ? lang.description.yes : lang.description.no;
@@ -122,21 +121,20 @@ function labelToDom(key, msg) {
 function setButtonRadioClick() {
   let b = document.body.getElementsByClassName("buttonRadio");
   for (el of b) {
-    el.removeEventListener("click", buttonRadioClick);
+    //el.removeEventListener("click", buttonRadioClick);
     el.addEventListener("click", buttonRadioClick);
   }
 }
-function setCheckedClick(){
+function setCheckedClick() {
   let el = document.getElementById("ani7_checked");
 
-    el.removeEventListener("click", discardChecked);
-    el.addEventListener("click", discardChecked);
+  //el.removeEventListener("click", discardChecked);
+  el.addEventListener("click", discardChecked);
 }
-function discardChecked(event){
+function discardChecked(event) {
   //console.log("checked: ",event.toElement.checked);
-  if(event.toElement.checked)
-  getTable();
-  else{
+  if (event.toElement.checked) getTable();
+  else {
     let table = document.querySelector("#table");
     table.innerHTML = "";
   }
@@ -146,7 +144,7 @@ async function setUrls() {
   let ip = document.querySelectorAll('input[name="ani7_br_radio"]');
   let pars = await parseUrl();
   if (!pars) return;
-  console.log(ip);
+  //console.log(ip);
   ip.forEach((el) => {
     if (el.value == 1) {
       el.setAttribute("data-url", pars.strDomain);
@@ -260,7 +258,7 @@ function getUrlFromBase(url) {
 
 function getTable() {
   let el = document.getElementById("ani7_checked");
-  if(!el.checked) return;
+  if (!el.checked) return;
   chrome.runtime.sendMessage(
     {
       action: "getTable",
@@ -279,12 +277,12 @@ function createTable(urls) {
   for (let i = 0; i < count; i++) {
     let tr = document.createElement("tr");
     tr.classList.add("tooltip");
- //   console.log("URLss", urls);
+    //   console.log("URLss", urls);
     let str = urls[i].url;
     str = decodeURI(str);
     if (str.length > 150) str = str.substring(0, 149) + " ...";
     td = document.createElement("td");
- //   console.log(str);
+    //   console.log(str);
 
     td.innerHTML =
       str + "<span class='tooltiptext'>" + urls[i].title + "</span>";

@@ -181,7 +181,13 @@ async function delUrlFromBase(mess) {
 }
 // Проверка и распарсивание URL
 function getRegexpDomen(URL) {
-  let g = {};
+  let g = {
+    url: "",
+    strUrl: "",
+    strUrlNoArgs: "",
+    strDomain: "",
+  };
+  if (URL.indexOf("chrome://") != -1) return g;
   let regex = new RegExp(
     "^(?:https?://)?(?:[^@\\n]+@)?(?:www.)?([^:/\\n?=]+)",
     "gmi"
@@ -197,7 +203,7 @@ function getRegexpDomen(URL) {
     s = url.substring(0, s);
     if (s.slice(-1) === "/") s = s.slice(0, -1);
     let m2 = regexHttp.exec(s); // отнимаем http://
-    g.strUrlNoArgs = m2[2]; // ЖЖЖЖЖЖЖЖ строка без аргументов, если они были
+    if (m2) g.strUrlNoArgs = m2[2]; // ЖЖЖЖЖЖЖЖ строка без аргументов, если они были
   }
   let m2 = regexHttp.exec(url);
   if (m2) url = m2[2];
