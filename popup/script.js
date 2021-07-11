@@ -197,9 +197,16 @@ async function parseUrl() {
 }
 // Проверка и распарсивание URL
 function getRegexpDomen(URL) {
-  let g = {};
+  let g = {
+    url: "",
+    strUrl: "",
+    strUrlNoArgs: "",
+    strDomain: "",
+  };
+  if (URL.indexOf("chrome://") != -1) return g;
   let regex = new RegExp(
-    "^(?:https?://)?(?:[^@\\n]+@)?(?:www.)?([^:/\\n?=]+)",
+    //"^(?:https?://)?(?:[^@\\n]+@)?(?:www.)?([^:/\\n?=]+)",
+    "https?://?([^/\\?]+)",
     "gmi"
   );
   let regexHttp = new RegExp("(^https?://)(.*)", "gmi");
@@ -213,10 +220,13 @@ function getRegexpDomen(URL) {
     s = url.substring(0, s);
     if (s.slice(-1) === "/") s = s.slice(0, -1);
     let m2 = regexHttp.exec(s); // отнимаем http://
-    g.strUrlNoArgs = m2[2]; // ЖЖЖЖЖЖЖЖ строка без аргументов, если они были
+    if (m2 && m2.length > 2) g.strUrlNoArgs = m2[2];
+    // ЖЖЖЖЖЖЖЖ строка без аргументов, если они были
+    else g.strUrlNoArgs = "";
   }
   let m2 = regexHttp.exec(url);
-  if (m2) url = m2[2];
+  if (m2 && m2 > 2) url = m2[2];
+  // else url =  url
   g.strUrl = url; // ЖЖЖЖЖЖЖЖ схема+домен+мусор и -слеш
 
   let m = regex.exec(url);
@@ -271,6 +281,7 @@ function getTable() {
   );
 }
 function createTable(urls) {
+  if (!urls) return;
   let table = document.querySelector("#table");
   table.innerHTML = "";
   let count = urls.length;
@@ -312,8 +323,8 @@ function clickIcon(events, x) {
       url: url,
     },
     (res) => {
-      if (res.noClose) {
-      }
+      // if (res.noClose) {
+      // }
       //window.close();
 
       start().then(() => {

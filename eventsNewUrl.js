@@ -1,61 +1,86 @@
 async function checkEvents(id) {
-  let tab = await chrome.tabs.get(id);
-  await changeTab(tab);
-  await changeIcon(tab.id);
+  //let tab = await chrome.tabs.get(id);
+  let tab = await checkGetTab(id);
+  if (!tab) {
+    console.log("empty", id);
+    return;
+  }
+  try {
+    await changeTab(tab);
+  } catch (e) {
+    console.log("changeTab: ", e.message);
+  }
+  try {
+    await changeIcon(tab.id);
+  } catch (e) {
+    console.log("changeIcon: ", e.message);
+  }
 }
 
 // #1 Будем ловить только смену URL
 // срабатывает на новую вкладку (вероятно когда у нее меняется URL)
 chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
-  if (changeInfo.url) {
-    // ловим смену URL // url появится только если меняется URL
-    await checkEvents(tab.id);
-  }
+  await checkEvents(tab.id);
 });
 // #2 когда вкладка заменяется другой вкладкой из-за предварительной отрисовки
 // addedTabId заменяет removedTabId, // onReplaced !? может не быть такого ?
 if (chrome.tabs.onReplaced) {
   chrome.tabs.onReplaced.addListener(async (addedTabId, removedTabId) => {
-    console.log("Когда же это срабатывает ?", addedTabId, removedTabId);
-    try {
-      let tab = await chrome.tabs.get(addedTabId);
-      if (tab) {
-        await checkEvents(tab.id);
-      }
-    } catch (e) {
-      console.error("replaced а нужно ли? ", e);
-    }
-    // chrome.tabs.update(tabId, {autoDiscardable: false});
+    //console.log(">>>:", addedTabId, removedTabId);
+    await checkEvents(addedTabId);
   });
 }
 // #3 активируется вкладка , но url вкладки ещё может не быть
 // поэтому такая свистопляска с таймерами
 chrome.tabs.onActivated.addListener(async (activeInfo) => {
-  let id = activeInfo.tabId;
-  let ex = 1000;
+  await checkEvents(activeInfo.tabId);
+});
+async function checkGetTab(id) {
   // не понятно, но не успевает чтото получить tab при переключении вкладок
   // соорудил тут , таймер
-  let interv = setInterval(async () => {
-    //  я здесь надо чтото вроде nextTick()
-    let tab;
+  let ex = 1000;
+  let tab = null;
+  for (let i = 0; i < ex; i++) {
+    await new Promise((res) =>
+      setTimeout(() => {
+        res(true);
+      }, 100)
+    );
     try {
       tab = await chrome.tabs.get(id);
-      clearInterval(interv);
       if (tab && tab.url) {
-        await checkEvents(tab.id);
+        return tab;
       }
-    } catch (e) {
-      // пропускаем cannot be edited
-      if (e.message.indexOf("cannot be edited") == -1) {
-        console.log("undef error: ", e.message);
-        clearInterval(interv);
-      }
-    }
-    if (ex-- < 0) {
-      clearInterval(interv);
-    }
-  }, 50);
-});
+    } catch (e) {}
+  }
+  return null;
+  // let interv = setInterval(async () => {
+  //   //  я здесь надо чтото вроде nextTick()
+  //   try {
+  //     tab = await chrome.tabs.get(id);
+  //     clearInterval(interv);
+  //     if (tab && tab.url) {
+  //       //await checkEvents(tab.id);
+  //       return tab;
+  //     }
+  //   } catch (e) {
+  //     // пропускаем cannot be edited
+  //     if (
+  //       e.message.indexOf("cannot be edited") == -1
+  //       //  e.message.indexOf("No tab with id") == -1
+  //     ) {
+  //       console.log("checkGetTab: ", e.message);
+  //       clearInterval(interv);
+  //       return null;
+  //     }
+  //   }
+  //   if (ex-- < 0) {
+  //     clearInterval(interv);
+  //     return null;
+  //   }
+  // }, 300);
+}
+
 // ловим создание окна и проверяем в нем все вкладки
 // например при открытии после перезагрузки
 chrome.windows.onCreated.addListener(async (win) => {
