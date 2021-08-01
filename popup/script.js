@@ -133,7 +133,7 @@ function setCheckedClick() {
 }
 function discardChecked(event) {
   //console.log("checked: ",event.toElement.checked);
-  if (event.toElement.checked) getTable();
+  if (event.target.checked) getTable();
   else {
     let table = document.querySelector("#table");
     table.innerHTML = "";
@@ -302,7 +302,7 @@ function createTable(urls) {
     td = document.createElement("td");
     td.innerHTML =
       "<img src='" +
-      chrome.runtime.getURL("icons/freezeGreen.png") +
+      chrome.runtime.getURL("icons/del16.png") +
       "' alt='' height=16 width=16></img>";
     td.style.width = "16px";
     td.style.cursor = "pointer";

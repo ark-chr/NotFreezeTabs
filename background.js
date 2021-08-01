@@ -1,4 +1,4 @@
-console.log("хз старт..");
+console.log("старт..");
 self.importScripts("vendor/localforage.min.js", "eventsNewUrl.js");
 self.addEventListener("install", (event) => {
   console.log("установка ServiceWorker..");
